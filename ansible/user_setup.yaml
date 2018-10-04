@@ -1,0 +1,53 @@
+---
+- hosts: pairing_stations
+  tasks:
+    - name: Make sure we have a 'wheel' group
+      become: yes
+      group:
+        name: wheel
+        state: present
+    - name: Allow 'wheel' group to have passwordless sudo
+      become: yes
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^%wheel'
+        line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+        validate: visudo -cf %s
+    - name: "Create pairing group"
+      become: yes
+      group:
+        name: pairing
+        state: present
+    - name: "Create Users"
+      become: yes
+      user:
+        name: "{{ item.name }}"
+        state: present
+        groups:
+          - docker
+          - wheel
+        group: pairing
+      with_items: "{{ users }}"
+    - name: "Setup SSH Keys"
+      become: yes
+      become_user: "{{ item.name }}"
+      authorized_key:
+        user: "{{ item.name }}"
+        key: "{{ item.public_key }}"
+      loop: "{{ users }}"
+    - name: "Git clone personal dotfiles"
+      become: yes
+      become_user: "{{ item.name }}"
+      git:
+        repo: "{{ item.dotfiles_git_repo }}"
+        dest: "/home/{{ item.name }}/repos/dotfiles"
+      loop: "{{ users }}"
+    # - name: "Run the setup in each dotfiles repo"
+    #   command: ./setup
+    #   become: yes
+    #   become_user: "{{ item.name }}"
+    #   args:
+    #    chdir: "/home/{{ item.name }}/repos/dotfiles"
+    #   loop: "{{ users }}"
+

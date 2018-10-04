@@ -1,0 +1,11 @@
+all:
+  children:
+    pairing_stations:
+      hosts:
+        YOUR_PUBLIC_DNS:
+          ansible_user: ubuntu
+          authorized_key:
+          users:
+            - name: YOUR_USER
+              dotfiles_git_repo: https://github.com/raymondberg/dotfiles
+              public_key: ssh-rsa ...
