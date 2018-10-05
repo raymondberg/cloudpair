@@ -1,0 +1,15 @@
+- ec2:
+    keypair: ssh-rsa ...
+    group: pairing
+    instance_type: c5.large
+    image: ami-6e649707
+    wait: yes
+    wait_timeout: 500
+    count: 5
+    volumes:
+    - device_name: /dev/sdb
+      snapshot: snap-abcdef12
+      volume_size: 10
+    monitoring: yes
+    vpc_subnet_id: subnet-29e63245
+    assign_public_ip: yes
