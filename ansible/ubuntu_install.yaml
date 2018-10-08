@@ -6,4 +6,8 @@
       raw: test -e /usr/bin/python3 || (sudo apt -y update && sudo apt install -y python3)
     - name: 'Install Python'
       raw: test -e /usr/bin/python || (sudo sudo ln -s /usr/bin/python3 /usr/bin/python)
-
+    - name: Install zsh
+      become: true
+      apt:
+        pkg: zsh
+        state: present

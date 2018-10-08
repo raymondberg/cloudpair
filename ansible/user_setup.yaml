@@ -28,6 +28,7 @@
           - docker
           - wheel
         group: pairing
+        shell: /usr/bin/zsh
       with_items: "{{ users }}"
     - name: "Setup SSH Keys"
       become: yes
@@ -43,11 +44,12 @@
         repo: "{{ item.dotfiles_git_repo }}"
         dest: "/home/{{ item.name }}/repos/dotfiles"
       loop: "{{ users }}"
-    # - name: "Run the setup in each dotfiles repo"
-    #   command: ./setup
-    #   become: yes
-    #   become_user: "{{ item.name }}"
-    #   args:
-    #    chdir: "/home/{{ item.name }}/repos/dotfiles"
-    #   loop: "{{ users }}"
-
+    - name: "Run the setup in each dotfiles repo"
+      command: scripts/install
+      become: yes
+      become_user: "{{ item.name }}"
+      args:
+       chdir: "/home/{{ item.name }}/repos/dotfiles"
+      loop: "{{ users }}"
+      register: dotfiles_setup_output
+    - debug: var=dotfiles_setup_output.stdout_lines

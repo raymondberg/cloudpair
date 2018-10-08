@@ -14,3 +14,8 @@ A tool for getting your desired pairing configuraton ready. Ideal for users of a
   * dotfile repository (raymondberg/dotfiles is default)
 * Run `bin/install`
 * Clear your SSH identities, and re-add the default: `ssh-add -D && ssh-add`
+
+## Feature Requests
+
+* Ability to provision an ec2 instance in this script
+* Ability to query for a list of cloudpairs and spin them up or down
