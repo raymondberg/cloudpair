@@ -8,6 +8,8 @@ A tool for getting your desired pairing configuraton ready. Ideal for users of a
 * Install ansible requirements: `ansible-galaxy install -r requirements.yml`
 * Launch a new ec2 instance (ubuntu is currently supported), download your new keypair `something.pem` file.
 * Add the `something.pem` to your SSH identities: `ssh-add something.pem`
+* Connect to ec2 instance and run `sudo apt-get update` to ensure package
+  manager is up-to-date
 * Update the configuration to meet your needs `ansible/hosts.yaml`:
   * public dns name of your host.
   * users and public keys using the server
